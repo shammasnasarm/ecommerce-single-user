@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+	<!-- Page info -->
+	<div class="page-top-info">
+		<div class="container">
+			<h4>Register</h4>
+			
+		</div>
+	</div>
+	<!-- Page info end -->
+
+
+
+			<div class="row">
+				<div class="col-lg-6 contact-info">
+				  
+					<form class="contact-form" action="register_user" method="POST">
+                        {% csrf_token %}
+						<input type="text" placeholder="First name" name="txtfirst" id="txtfirst">
+                        <input type="text" placeholder="Last name" name="txtlast" id="txtlast">
+						<input type="email" placeholder="E-mail" name="usremail" id="usremail">
+                        <input type="email" placeholder="Username" name="txtusr" id="txtusr">
+						<input type="password" placeholder="Password" name="txtpass1" id="txtpass1">
+						<input type="password" placeholder="Conform Password" name="txtpass2" id="txtpass2">
+						<button type="submit" class="site-btn submit-order-btn">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		</section>
+	
+{% endblock %}
+

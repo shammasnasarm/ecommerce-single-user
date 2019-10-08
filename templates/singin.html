@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+	<!-- Page info -->
+	<div class="page-top-info">
+		<div class="container">
+			<h4>Register</h4>
+			
+		</div>
+	</div>
+	<!-- Page info end -->
+
+
+
+			<div class="row">
+				<div class="col-lg-6 contact-info">
+				  
+					<form class="contact-form" action="login" method="POST">
+                        {% csrf_token %}
+                        <input type="text" placeholder="Username" name="txtusr" id="txtusr">
+						<input type="password" placeholder="Password" name="txtpass" id="txtpass">
+						{% if request.GET.next %}
+						<input type="hidden" name="next" id="next" value="{{request.GET.next}}">
+						{% endif %}
+						<button type="submit" class="site-btn submit-order-btn">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		</section>
+	
+{% endblock %}
+
+
+

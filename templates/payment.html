@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <!-- checkout section  -->
+<section class="checkout-section spad">
+		<div class="container">
+			<div class="row">
+			  <div class="col-lg-8 order-2 order-lg-1">
+					<form action="place_order" method="post" class="checkout-form">
+						{% csrf_token %}
+
+
+
+						<div class="cf-title">Payment</div>
+						<ul class="payment-list">
+							<li><input type="radio" name="rad" id="paypal" value="paypal"/><span>Paypal<img src="{% static 'img/paypal.png' %}" alt=""></a></span></li>
+							<div id="txtpaypal">
+								<input type="text" name="txtusername" placeholder="Username">
+								<input type="text" name="txtpass" placeholder="Password">
+							</div>
+							<li><input type="radio" name="rad" id="cdcard" value="credit"/><span>Credit / Debit card <img src="{% static 'img/mastercart.png' %}" alt=""></span></li>
+							<div id="txtcredit">
+								<input type="text" name="txtusername" placeholder="Card No.">
+								<input type="text" name="txtpass" placeholder="CVV">
+							</div>
+							<li><input type="radio" name="rad" id="cod" value="cod"/><span>Pay when you get the package</span></li>
+						</ul>
+						<input type="hidden" name="txttot" id="txttot" value="{{tot}}">
+						<button type="submit" class="site-btn submit-order-btn">Place Order</button>
+					</form>
+				</div>
+				<div class="col-lg-4 order-1 order-lg-2">
+					<div class="checkout-cart">
+						<h3>Your Cart</h3>
+						<ul class="product-list">
+							{% for p in data %}
+							<li>
+								<div class="pl-thumb"><img src="{{ p.Product_varient_id.Image.url }}" alt="" width="97.77px" height="99px"></div>
+								<h6>{{p.Product_varient_id.Name}}</h6>
+								<p>₹{{p.Product_varient_id.Price}} x {{p.Quantity}} = {{p.Total}}</p>
+							</li>
+							{% endfor %}
+
+						</ul>
+						<ul class="price-list">
+							<li>Sub_Total<span>₹{{sub_tot}}</span></li>
+							<li>Discount<span>₹{{disc}}</span></li>
+							<li>Shipping<span>₹{{shipping}}</span></li>
+							<li class="total">Total<span>₹{{tot}}</span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+</section>
+	<!-- checkout section end -->
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+$("#txtpaypal").hide();
+$("#txtcredit").hide();
+$('input:radio[name="rad"]').change(
+function(){
+	var buttonid=$(this).val();
+
+            if (buttonid == 'paypal'){
+             $("#txtpaypal").show();
+             $("#txtcredit").hide();
+			}
+
+			else if (buttonid == 'credit'){
+			 $("#txtpaypal").hide();
+             $("#txtcredit").show();
+			}
+			else {
+			 $("#txtpaypal").hide();
+             $("#txtcredit").hide();
+             }
+    });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+	<!-- cart section end -->
+	<section class="cart-section spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="cart-table">
+						<h3>Your Cart</h3>
+						<div class="cart-table-warp">
+							<table>
+							<thead>
+								<tr>
+									<th class="product-th">Product</th>
+									<th class="quy-th">Quantity</th>
+									<th class="size-th">Size</th>
+									<th class="total-th">Price</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for p in data %}				
+								<tr>
+									<td class="product-col">
+										<img src="{{ p.Product_varient_id.Image.url }}" alt="">
+										<div class="pc-title">
+											<h4>{{ p.Product_varient_id.Name }}</h4>
+											<p>₹{{ p.Product_varient_id.Price }}</p>
+										</div>
+									</td>
+									
+									<td class="size-col"><h4>{{ p.Quantity }}</h4></td>
+									<td class="size-col"><h4>Size {{ p.Product_varient_id.Size.Size }}</h4></td>
+									<td class="total-col"><h4>₹{{ p.Total }}</h4></td>
+									<td class="size-col"><a href="{% url 'delete' p.pk %}"> <img src="{% static 'img/remove.png' %}" width="20" height="20" > </a> </td>
+								</tr>
+							
+                            {% endfor %}
+
+
+							</tbody>
+						</table>
+						</div>
+						{% if discount %}
+						<div class="total-cost">
+							<input type="hidden" name="hidprice" id="hidprice" value="{{price}}">
+							<h6>Price :<span> ₹{{ price }} </span></h6>
+						</div>
+						<div class="total-cost">
+							<input type="hidden" name="hiddiscount" id="hiddiscount" value="{{discount}}">
+							<h6>Discount :<span> ₹{{ discount }} </span></h6>
+						</div>
+						{% endif %}
+						<div class="total-cost">
+							<h6>Total :<span> ₹{{ tot }} </span></h6>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 card-right">
+					<form class="promo-code-form" action="/applypromo" method="POST">
+						{% csrf_token %}
+						{% if price %}
+						<input type="hidden" name="txttot1" value="{{ price }}">
+						{% else %}
+						<input type="hidden" name="txttot1" value="{{ tot }}">
+						{% endif %}
+						<input type="text" placeholder="Enter promo code" name="txtpromo" id="txtpromo" required>
+						<button type="submit" name="btnprom" id="btnprom"> Submit </button>
+					</form>
+					<form action="checkout" method="post">
+						{% csrf_token %}
+						{% if discount %}
+							<input type="hidden" name="hidprice" value="{{price}}">
+							<input type="hidden" name="hiddiscount"  value="{{discount}}">
+						{% else %}
+							<input type="hidden" name="hidprice" value="{{tot}}">
+							<input type="hidden" name="hiddiscount" value="0">
+						{% endif %}
+						<input type="hidden" name="txttot" value="{{ tot }}">
+					<input type="submit" value="checkout" class="site-btn">
+					</form>
+					<a href="" class="site-btn sb-dark">Continue shopping</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- cart section end -->
+
+{% endblock %}
+
+

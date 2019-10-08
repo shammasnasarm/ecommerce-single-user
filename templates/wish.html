@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+	<!-- cart section end -->
+	<section class="cart-section spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="cart-table">
+						<h3>Wish List</h3>
+						<div class="cart-table-warp">
+							<table>
+							<thead>
+								<tr>
+									<th class="product-th">Product</th>
+									<th class="size-th">Size</th>
+									<th class="total-th">Price</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for p in data %}				
+								<tr>
+									<td class="product-col">
+										<img src="{{ p.Product_varient_id.Image.url }}" alt="">
+										<div class="pc-title">
+											<h4>{{ p.Product_varient_id.Name }}</h4>
+										</div>
+									</td>
+									
+									<td class="size-col"><h4>{{ p.Product_varient_id.Size.Size }}</h4></td>
+									<td class="total-col"><h4>Rs.{{ p.Product_varient_id.Price }}</h4></td>
+									<td class="size-col"><a href="{% url 'deletefromwish' p.pk %}"> <img src="{% static 'img/remove.png' %}" width="20" height="20" > </a> </td>
+									<td class="size-col"><a href="{% url 'currentproduct' p.pk %}"> <img src="{% static 'img/add.png' %}" width="15" height="15" > </a> </td>
+								</tr>
+							
+                            {% endfor %}
+
+
+							</tbody>
+						</table>
+						</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</section>
+	<!-- cart section end -->
+
+{% endblock %}
+

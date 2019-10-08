@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+	<!-- cart section end -->
+	<section class="cart-section spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="cart-table">
+						<h3>My Orders</h3>
+						<div class="cart-table-warp">
+							<table>
+							<thead>
+								<tr>
+
+									<th class="product-th">Product</th>
+									<th class="quy-th">Quantity</th>
+									<th class="quy-th">Size</th>
+                                    <th class="quy-th">Order Date</th>
+									<th class="quy-th">Status</th>
+
+								</tr>
+							</thead>
+							<tbody>
+							{% for p in data %}
+
+
+        <tr>{% for i in p.Items.all %}
+
+            <tr>
+            <td class="product-col">
+										<img src="{{ i.Product_varient_id.Image.url }}" alt="">
+										<div class="pc-title">
+											<h4>{{ i.Product_varient_id.Name }}</h4>
+											<p>₹{{ i.Product_varient_id.Price }}</p>
+										</div>
+									</td>
+                                <th>  {{ i.Quantity }} </th>
+                                <th> {{ i.Product_varient_id.Size.Size }} </th>
+                                <th> {{p.Date}} </th>
+								{% ifequal p.Delivered True %}
+								<th> Delivered </th>
+								{% else %}
+								<th> Not Delivered </th>
+								{% endifequal %}
+
+                            </tr>
+            {% endfor %} </tr>
+
+
+
+
+{% endfor %}
+
+							</tbody>
+						</table>
+						</div>
+
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+	<!-- cart section end -->
+
+{% endblock %}
+

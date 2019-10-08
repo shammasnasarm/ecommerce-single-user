@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+	<!-- checkout section  -->
+	<section class="checkout-section spad">
+		<div class="container">
+			<form action="procedtopay" method="post" class="checkout-form">
+						{% csrf_token %}
+			<div class="row">
+				<div class="col-lg-8 order-2 order-lg-1">
+
+						<div class="cf-title">Billing Address</div>
+
+						{% if shpadr %}
+						{% for adr in shpadr %}
+						<div class="row address-inputs">
+							<div class="col-md-12">
+								<input type="text" name="txtname" id="txtname" placeholder="Name" value="{{adr.Name}}">
+								<input type="text" name="txthouse" id="txthouse" placeholder="House No" value="{{adr.House_no}}">
+								<input type="text" name="txtlandmark" id="txtlandmark" placeholder="Landmark" value="{{adr.Land_mark}}">
+								<input type="text" name="txtpost" id="txtpost" placeholder="Post" value="{{adr.Post}}">
+
+								 <select class="dropdown" name="country" id="country">
+   									 <option value="{{ adr.Country.id }}"> {{adr.Country}} </option>
+									{% for n in count %}
+   									 <option value="{{ n.id }}"> {{ n.Country }} </option>
+									{% endfor %}
+ 									 </select>
+
+								<select class="dropdown" name="state" id="state">
+    								<option value="{{adr.State.id}}">{{adr.State}}</option>
+  								</select>
+
+  								<select class="dropdown" name="district" id="district">
+    							<option value="{{adr.District.id}}">{{adr.District}}</option>
+								</select>
+
+
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="txtpin" id="txtpin" placeholder="Zip code" value="{{adr.Pin}}">
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="txtphno" id="txtphno" placeholder="Phone no." value="{{adr.Phone}}">
+							</div>
+						</div>
+						{% endfor %}
+						{% else %}
+						<div class="row address-inputs">
+							<div class="col-md-12">
+								<input type="text" name="txtname" placeholder="Name">
+								<input type="text" name="txthouse" placeholder="House No">
+								<input type="text" name="txtlandmark" placeholder="Landmark">
+								<input type="text" name="txtpost" placeholder="Post">
+
+
+                                <select class="dropdown" name="country" id="country" required>
+   									 <option value="00">Country</option>
+									{% for n in count %}
+   									 <option value="{{ n.id }}"> {{ n.Country }} </option>
+									{% endfor %}
+ 									 </select>
+
+								<select class="dropdown" name="state" id="state" required>
+    								<option value="00">State</option>
+  								</select>
+
+  								<select class="dropdown" name="district" id="district">
+    							<option value="00">District</option>
+								</select>
+
+
+
+
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="txtpin" placeholder="Zip code">
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="txtphno" placeholder="Phone no.">
+							</div>
+						</div>
+						{% endif %}
+						<div class="cf-title">Delievery Info</div>
+						<div class="row shipping-btns">
+							<div class="col-6">
+								<h4>Standard</h4>
+							</div>
+							<div class="col-6">
+
+
+										<input type="radio" name="txtship" id="txtship" value="0" checked>
+										<label>Free</label>
+
+
+							</div>
+
+							<div class="col-6">
+								<h4>Fast delievery  </h4>
+							</div>
+							<div class="col-6">
+
+
+										<input type="radio" name="txtship" id="txtship1" value="100">
+										<label>₹100</label>
+
+
+							</div>
+						</div>
+
+
+						<button type="submit" id="btnplace" class="site-btn submit-order-btn">Place Order</button>
+
+				</div>
+				<div class="col-lg-4 order-1 order-lg-2">
+					<div class="checkout-cart">
+						<h3>Your Cart</h3>
+						<ul class="product-list">
+							{% for p in data %}
+							<li>
+								<div class="pl-thumb"><img src="{{ p.Product_varient_id.Image.url }}" alt="" width="97.77px" height="99px"></div>
+								<h6>{{p.Product_varient_id.Name}}</h6>
+								<p>₹{{p.Product_varient_id.Price}} x {{p.Quantity}} = {{p.Total}}</p>
+							</li>
+							{% endfor %}
+						</ul>
+						<ul class="price-list">
+							<li>Sub_Total<span>₹{{pric}}</span></li>
+							<input type="hidden" name="txtsubtot" id="txtsubtot" value="{{pric}}">
+							<li>Discount<span>₹{{disc}}</span></li>
+							<input type="hidden" name="txtdisc" id="txtdisc" value="{{disc}}">
+							<li class="total">Total<span>₹{{tot}}</span></li>
+							<input type="hidden" name="txttot" id="txttot" value="{{tot}}">
+						</ul>
+					</div>
+				</div>
+			</div>
+				</form>
+		</div>
+	</section>
+	<!-- checkout section end -->
+{% endblock %}
+
+	{% block script %}
+
+<script>
+$(document).ready(function(){
+$("#country").change(function()
+{
+var countryid=$(this).val();
+
+
+$.ajax({
+url:'{% url "getstate" %}',
+data:{
+'cid':countryid
+},
+success:function(data){
+
+$("#state").html(data);
+}
+
+
+});
+
+});
+});
+
+
+
+
+</script>
+
+
+<script>
+$(document).ready(function(){
+$("#state").change(function()
+{
+
+var stateid=$(this).val();
+
+
+$.ajax({
+url:'{% url "getdistrict" %}',
+data:{
+'sid':stateid
+},
+success:function(data){
+
+$("#district").html(data);
+}
+
+
+});
+
+});
+});
+
+
+
+
+</script>
+
+{% endblock %}
